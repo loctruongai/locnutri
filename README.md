@@ -14,7 +14,7 @@ Hệ thống n8n được tích hợp sẵn:
 
 ## Mặc định đăng nhập:
 - Username: `admin`
-- Password: `locnutri@2024`
+- Password: `2025@Locnutri`
 
 > Nên đổi lại mật khẩu sau khi cài đặt xong.
 
