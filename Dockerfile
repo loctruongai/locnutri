@@ -21,3 +21,10 @@ EXPOSE 5678
 
 # Lệnh chạy n8n
 CMD ["n8n"]
+
+FROM node:18-bullseye
+RUN apt-get update && apt-get install -y ffmpeg python3-pip curl && pip3 install yt-dlp && npm i -g n8n tini && rm -rf /var/lib/apt/lists/*
+WORKDIR /usr/local/lib/n8n
+EXPOSE 5678
+ENTRYPOINT ["tini","--"]
+CMD ["n8n"]
