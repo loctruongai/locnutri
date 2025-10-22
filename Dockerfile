@@ -7,24 +7,20 @@ RUN apt-get update && \
     npm i -g n8n@latest tini && \
     rm -rf /var/lib/apt/lists/*
 
-# Thư mục làm việc
+# Workdir
 WORKDIR /usr/local/lib/n8n
 
-# Thư mục dữ liệu cho n8n và phân quyền
+# Nơi lưu dữ liệu n8n và phân quyền
 RUN mkdir -p /home/node/.n8n && chown -R node:node /home/node
+ENV N8N_USER_FOLDER=/home/node/.n8n
 
-# Biến môi trường
-ENV NODE_ENV=production \
-    N8N_PORT=5678 \
-    N8N_USER_FOLDER=/home/node/.n8n \
-    GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
+# Port Render bắt buộc cho Docker
+ENV N8N_PORT=10000
+EXPOSE 10000
 
-# Expose
-EXPOSE 5678
-
-# Chạy dưới user không đặc quyền
+# Chạy bằng user thường
 USER node
 
-# Entrypoint
+# Start
 ENTRYPOINT ["tini","--"]
 CMD ["n8n"]
