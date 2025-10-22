@@ -7,7 +7,7 @@ Hệ thống n8n được tích hợp sẵn:
 ## Cách deploy lên Render.com
 
 1. Fork repo này về tài khoản GitHub của bạn
-2. Truy cập [https://dashboard.render.com](https://dashboard.render.com)
+2. Truy cập https://dashboard.render.com
 3. Chọn “New Web Service”
 4. Kết nối với repo `locnutri`
 5. Render sẽ tự động deploy dịch vụ n8n kèm FFmpeg + yt-dlp
