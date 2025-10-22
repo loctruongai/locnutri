@@ -12,15 +12,17 @@ services:
         value: admin
       - key: N8N_BASIC_AUTH_PASSWORD
         value: 2025@Locnutri
-      - key: N8N_PORT
-        value: "5678"
       - key: N8N_HOST
         value: locnutri-n8n.onrender.com
+      - key: N8N_PORT
+        value: "10000"
+      - key: N8N_PROTOCOL
+        value: https
       - key: WEBHOOK_URL
         value: https://locnutri-n8n.onrender.com/
       - key: GENERIC_TIMEZONE
         value: Asia/Ho_Chi_Minh
       - key: EXECUTIONS_PROCESS
         value: main
-      - key: N8N_PROTOCOL
-        value: https
+      - key: N8N_ENABLE_SIGNUP
+        value: "false"
