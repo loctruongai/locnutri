@@ -1,26 +1,23 @@
-FROM node:20-bullseye
+# Dùng Debian base để có apt-get
+FROM node:18-bullseye
 
-# System deps
-RUN apt-get update && \
-    apt-get install -y ffmpeg python3-pip curl && \
-    pip3 install -U yt-dlp && \
-    npm i -g n8n@latest tini && \
-    rm -rf /var/lib/apt/lists/*
+# Tạo thư mục cho n8n
+RUN mkdir -p /usr/local/lib/n8n
 
-# Workdir
 WORKDIR /usr/local/lib/n8n
 
-# Nơi lưu dữ liệu n8n và phân quyền
-RUN mkdir -p /home/node/.n8n && chown -R node:node /home/node
-ENV N8N_USER_FOLDER=/home/node/.n8n
+# Cài các gói cần thiết
+RUN apt-get update && \
+    apt-get install -y ffmpeg python3-pip curl && \
+    pip3 install yt-dlp && \
+    npm install --global n8n && \
+    apt-get clean
 
-# Port Render bắt buộc cho Docker
-ENV N8N_PORT=10000
-EXPOSE 10000
+# Tạo thư mục dữ liệu
+RUN mkdir /root/.n8n
 
-# Chạy bằng user thường
-USER node
+# Expose port mặc định
+EXPOSE 5678
 
-# Start
-ENTRYPOINT ["tini","--"]
+# Lệnh chạy n8n
 CMD ["n8n"]
