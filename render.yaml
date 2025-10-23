@@ -7,14 +7,14 @@ databases:
 services:
   - type: web
     name: locnutri-n8n
-    runtime: docker
+    runtime: dockerfile   # ← thay 'docker' thành 'dockerfile'
     plan: standard
     dockerfilePath: ./Dockerfile
     autoDeploy: true
     startCommand: n8n start
     healthCheckPath: /rest/healthz
+
     envVars:
-      # Bảo mật
       - key: N8N_BASIC_AUTH_ACTIVE
         value: "true"
       - key: N8N_BASIC_AUTH_USER
@@ -23,7 +23,6 @@ services:
         value: locnutri@2024
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
-      # Server
       - key: NODE_ENV
         value: production
       - key: GENERIC_TIMEZONE
@@ -36,7 +35,6 @@ services:
         value: https
       - key: WEBHOOK_URL
         value: https://locnutri-n8n.onrender.com
-      # Postgres
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_HOST
@@ -49,9 +47,9 @@ services:
         fromDatabase: { name: locnutri-n8n-db, property: password }
       - key: DB_POSTGRESDB_PORT
         fromDatabase: { name: locnutri-n8n-db, property: port }
-      # Thư mục dữ liệu map vào disk
       - key: N8N_USER_FOLDER
         value: /data
+
     disk:
       name: locnutri-n8n-data
       mountPath: /data
