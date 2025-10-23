@@ -1,20 +1,23 @@
-# LocNutri n8n on Render
+# LocNutri n8n Video Automation
 
-- Base: Node 20 + n8n latest
-- Tools: ffmpeg, yt-dlp
-- Data folder: /home/node/.n8n
+Hệ thống n8n được tích hợp sẵn:
+- FFmpeg: xử lý video, ghép voice
+- yt-dlp: tải video và phụ đề từ YouTube
 
-## Deploy
-1) Push repo này lên GitHub.
-2) Render → New Web Service → Runtime: Docker → chọn repo.
-3) Ở Environment, thêm các biến giống `render.yaml` (nếu không dùng render.yaml).
-4) Deploy.
+## Cách deploy lên Render.com
 
-## Login
-- User: admin
-- Pass: 2025@Locnutri  → đổi ngay trong Settings.
+1. Fork repo này về tài khoản GitHub của bạn
+2. Truy cập [https://dashboard.render.com](https://dashboard.render.com)
+3. Chọn “New Web Service”
+4. Kết nối với repo `locnutri`
+5. Render sẽ tự động deploy dịch vụ n8n kèm FFmpeg + yt-dlp
 
-## Notes
-- Render Docker yêu cầu app lắng nghe **PORT=10000**. Đã cấu hình `N8N_PORT=10000`.
-- `N8N_PROTOCOL=https` + `WEBHOOK_URL` dùng https để tránh lỗi redirect/cookie.
-- Dữ liệu lưu ở `/home/node/.n8n`. Không bị mất khi chỉ restart container.
+## Mặc định đăng nhập:
+- Username: `admin`
+- Password: `locnutri@2024`
+
+> Nên đổi lại mật khẩu sau khi cài đặt xong.
+
+## Sau khi deploy xong:
+- Truy cập n8n: `https://locnutri-n8n.onrender.com`
+- Import các workflow xử lý video
