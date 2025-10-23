@@ -1,23 +1,35 @@
-# Dùng Debian base để có apt-get
+# ===== Base image =====
 FROM node:18-bullseye
 
-# Tạo thư mục cho n8n
-RUN mkdir -p /usr/local/lib/n8n
+# ===== Cài đặt môi trường cần thiết =====
+USER root
+RUN apt-get update && \
+    apt-get install -y ffmpeg python3-pip curl ca-certificates tzdata && \
+    pip3 install --no-cache-dir yt-dlp && \
+    npm install --global n8n && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# ===== Thư mục ứng dụng và dữ liệu =====
+# /usr/local/lib/n8n  → nơi chứa binary n8n
+# /data               → map với Render Disk để lưu workflow, credentials
+RUN mkdir -p /usr/local/lib/n8n /data/files && \
+    ln -sf /data/files /files && \
+    chown -R node:node /usr/local/lib/n8n /data
 
 WORKDIR /usr/local/lib/n8n
 
-# Cài các gói cần thiết
-RUN apt-get update && \
-    apt-get install -y ffmpeg python3-pip curl && \
-    pip3 install yt-dlp && \
-    npm install --global n8n && \
-    apt-get clean
+# ===== Thiết lập môi trường runtime =====
+ENV N8N_USER_FOLDER=/data \
+    NODE_ENV=production \
+    N8N_PORT=5678 \
+    GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
 
-# Tạo thư mục dữ liệu
-RUN mkdir /root/.n8n
-
-# Expose port mặc định
+# ===== Expose port =====
 EXPOSE 5678
 
-# Lệnh chạy n8n
-CMD ["n8n"]
+# ===== Chạy bằng user 'node' để tăng bảo mật =====
+USER node
+
+# ===== Lệnh khởi động =====
+CMD ["n8n", "start"]
