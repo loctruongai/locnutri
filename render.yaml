@@ -7,11 +7,10 @@ databases:
 services:
   - type: web
     name: locnutri-n8n
-    runtime: dockerfile   # ← thay 'docker' thành 'dockerfile'
+    runtime: docker
     plan: standard
     dockerfilePath: ./Dockerfile
     autoDeploy: true
-    startCommand: n8n start
     healthCheckPath: /rest/healthz
 
     envVars:
