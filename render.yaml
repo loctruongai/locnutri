@@ -8,7 +8,7 @@ services:
   - type: web
     name: locnutri-n8n
     runtime: docker
-    plan: standard
+    plan: starter        # ← đổi từ “standard” sang “starter” ($7/tháng)
     dockerfilePath: ./Dockerfile
     autoDeploy: true
     healthCheckPath: /rest/healthz
@@ -52,4 +52,4 @@ services:
     disk:
       name: locnutri-n8n-data
       mountPath: /data
-      sizeGB: 5
+      sizeGB: 1            # ← đổi dung lượng từ 5 GB xuống 1 GB
