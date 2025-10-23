@@ -1,18 +1,65 @@
+databases:
+  - name: locnutri-n8n-db
+    plan: free
+    databaseName: n8n
+    user: n8n
+
 services:
   - type: web
     name: locnutri-n8n
-    env: docker
+    runtime: docker
     plan: standard
     dockerfilePath: ./Dockerfile
     autoDeploy: true
+    startCommand: n8n start
+    healthCheckPath: /rest/healthz
+
     envVars:
+      # Bảo mật đăng nhập
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: "true"
       - key: N8N_BASIC_AUTH_USER
         value: admin
       - key: N8N_BASIC_AUTH_PASSWORD
         value: locnutri@2024
+
+      # Cấu hình server
       - key: N8N_PORT
         value: 5678
       - key: N8N_HOST
         value: 0.0.0.0
+      - key: N8N_PROTOCOL
+        value: https
       - key: WEBHOOK_URL
         value: https://locnutri-n8n.onrender.com
+      - key: GENERIC_TIMEZONE
+        value: Asia/Ho_Chi_Minh
+      - key: NODE_ENV
+        value: production
+
+      # Bảo mật nội bộ
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+
+      # Database (Postgres)
+      - key: DB_TYPE
+        value: postgresdb
+      - key: DB_POSTGRESDB_HOST
+        fromDatabase: { name: locnutri-n8n-db, property: host }
+      - key: DB_POSTGRESDB_DATABASE
+        fromDatabase: { name: locnutri-n8n-db, property: database }
+      - key: DB_POSTGRESDB_USER
+        fromDatabase: { name: locnutri-n8n-db, property: user }
+      - key: DB_POSTGRESDB_PASSWORD
+        fromDatabase: { name: locnutri-n8n-db, property: password }
+      - key: DB_POSTGRESDB_PORT
+        fromDatabase: { name: locnutri-n8n-db, property: port }
+
+      # Thư mục dữ liệu
+      - key: N8N_USER_FOLDER
+        value: /data
+
+    disk:
+      name: locnutri-n8n-data
+      mountPath: /data
+      sizeGB: 5
